@@ -13,6 +13,13 @@ router.get("/generate-fake-data", async (req, res, next) => {
     product.price = faker.commerce.price();
     product.image = "https://via.placeholder.com/250?text=Product+Image";
 
+    // Generate fake reviews
+    product.reviews = Array.from({ length: 3 }, () => ({
+      username: faker.internet.userName(),
+      rating: faker.datatype.number({ min: 1, max: 5 }),
+      comment: faker.lorem.sentence(),
+    }));
+    
     savePromises.push(product.save());
   }
 

@@ -19,7 +19,7 @@ router.get("/generate-fake-data", async (req, res, next) => {
       rating: faker.datatype.number({ min: 1, max: 5 }),
       comment: faker.lorem.sentence(),
     }));
-    
+
     savePromises.push(product.save());
   }
 
@@ -51,6 +51,21 @@ router.get("/products", async (req, res, next) => {
     });
   } catch (err) {
     next(err);
+  }
+});
+
+router.get("/products/:product", async (req, res, next) => {
+  try {
+    const productId = req.params.product; 
+    const product = await Product.findById(productId); 
+
+    if (!product) {
+      return res.status(404).send({ error: "Product not found" });
+    }
+
+    res.send(product); 
+  } catch (err) {
+    next(err); 
   }
 });
 

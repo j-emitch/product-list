@@ -6,6 +6,13 @@ const ProductSchema = new Schema({
   name: String,
   price: Number,
   image: String,
+  reviews: [
+    {
+      username: String,
+      rating: Number,
+      comment: String,
+    },
+  ],
 });
 
 module.exports = mongoose.model("Product", ProductSchema);

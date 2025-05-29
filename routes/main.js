@@ -33,15 +33,17 @@ router.get("/generate-fake-data", async (req, res, next) => {
 
 router.get("/products", async (req, res, next) => {
   const perPage = 9;
-
   const page = parseInt(req.query.page) || 1;
+  const category = req.query.category;
 
   try {
-    const products = await Product.find({})
+    const query = category ? { category: category } : {};
+
+    const products = await Product.find(query)
       .skip(perPage * (page - 1))
       .limit(perPage);
 
-    const count = await Product.countDocuments();
+    const count = await Product.countDocuments(query);
 
     res.send({
       products,

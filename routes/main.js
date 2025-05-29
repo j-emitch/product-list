@@ -111,4 +111,27 @@ router.post("/products", async (req, res, next) => {
   }
 });
 
+router.post("/products/:product/reviews", async (req, res, next) => {
+  try {
+    const productId = req.params.product;
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return res.status(404).send({ error: "Product not found" });
+    }
+
+    const newReview = {
+      username: req.body.username,
+      text: req.body.text,
+    };
+
+    product.reviews.push(newReview);
+    await product.save();
+
+    res.status(201).send(product);
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;

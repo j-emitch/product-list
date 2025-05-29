@@ -69,4 +69,29 @@ router.get("/products/:product", async (req, res, next) => {
   }
 });
 
+router.get("/products/:product/reviews", async (req, res, next) => {
+  const perPage = 4;
+  const page = parseInt(req.query.page) || 1; 
+
+  try {
+    const productId = req.params.product; 
+    const product = await Product.findById(productId); 
+
+    if (!product) {
+      return res.status(404).send({ error: "Product not found" });
+    }
+
+    const reviews = product.reviews.slice((page - 1) * perPage, page * perPage);
+
+    res.send({
+      reviews,
+      totalReviews: product.reviews.length,
+      pages: Math.ceil(product.reviews.length / perPage), 
+      currentPage: page, 
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;

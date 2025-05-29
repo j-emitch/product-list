@@ -149,4 +149,26 @@ router.delete("/products/:product", async (req, res, next) => {
   }
 });
 
+router.delete("/reviews/:review", async (req, res, next) => {
+  try {
+    const reviewId = req.params.review;
+
+    const product = await Product.findOne({ "reviews._id": reviewId });
+
+    if (!product) {
+      return res.status(404).send({ error: "Review not found" });
+    }
+
+    product.reviews = product.reviews.filter(
+      (review) => review._id.toString() !== reviewId
+    );
+
+    await product.save();
+
+    res.send({ message: "Review deleted successfully", product: product });
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;

@@ -134,4 +134,19 @@ router.post("/products/:product/reviews", async (req, res, next) => {
   }
 });
 
+router.delete("/products/:product", async (req, res, next) => {
+  try {
+    const productId = req.params.product;
+    const deletedProduct = await Product.findByIdAndDelete(productId);
+
+    if (!deletedProduct) {
+      return res.status(404).send({ error: "Product not found" });
+    }
+
+    res.send({ message: "Product deleted successfully", product: deletedProduct });
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;

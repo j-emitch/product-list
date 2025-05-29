@@ -36,19 +36,24 @@ router.get("/products", async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const category = req.query.category;
   const price = req.query.price;
-
+  const query = req.query.query; 
+  
   try {
-    const query = category ? { category: category } : {};
+    const compoundQuery = category ? { category: category } : {};
+
+    if (query) {
+      compoundQuery.name = { $regex: query, $options: "i" }; 
+    }
 
     const sortOrder = 
       price === "highest" ? -1 : price === "lowest" ? 1 : null;
 
-    const products = await Product.find(query)
+    const products = await Product.find(compoundQuery)
       .sort(sortOrder ? { price: sortOrder } : {}) 
       .skip(perPage * (page - 1))
       .limit(perPage);
 
-    const count = await Product.countDocuments(query);
+    const count = await Product.countDocuments(compoundQuery);
 
     res.send({
       products,

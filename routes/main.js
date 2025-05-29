@@ -94,4 +94,21 @@ router.get("/products/:product/reviews", async (req, res, next) => {
   }
 });
 
+router.post("/products", async (req, res, next) => {
+  try {
+    const product = new Product({
+      category: req.body.category,
+      name: req.body.name,
+      price: req.body.price,
+      image: req.body.image,
+      reviews: req.body.reviews || [],
+    });
+
+    const savedProduct = await product.save();
+    res.status(201).send(savedProduct);
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;

@@ -1,4 +1,5 @@
 import ProductList from "./components/ProductList";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function Home() {
   return (

@@ -18,11 +18,11 @@ const TopBar = ({ onSearch, onSortCategory, onSortPrice }) => {
             onChange={(e) => onSortCategory(e.target.value)}
           >
             <option value="">Sort by Category</option>
-            <option value="garden">Garden</option>
-            <option value="jewellery">Jewellery</option>
-            <option value="sports">Sports</option>
-            <option value="beauty">Beauty</option>
-            <option value="health">Health</option>
+            <option value="Garden">Garden</option>
+            <option value="Jewelery">Jewelery</option>
+            <option value="Sports">Sports</option>
+            <option value="Beauty">Beauty</option>
+            <option value="Health">Health</option>
           </select>
         </div>
         <div className="col-md-3">
@@ -31,8 +31,8 @@ const TopBar = ({ onSearch, onSortCategory, onSortPrice }) => {
             onChange={(e) => onSortPrice(e.target.value)}
           >
             <option value="">Sort by Price</option>
-            <option value="asc">Low to High</option>
-            <option value="desc">High to Low</option>
+            <option value="lowest">Low to High</option>
+            <option value="highest">High to Low</option>
           </select>
         </div>
       </div>

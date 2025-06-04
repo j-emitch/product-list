@@ -50,7 +50,7 @@ router.get("/products", async (req, res, next) => {
 
     const count = await Product.countDocuments(compoundQuery);
 
-    res.send({
+    res.status(200).send({
       products,
       total: count,
       pages: Math.ceil(count / perPage),
@@ -70,7 +70,7 @@ router.get("/products/:product", async (req, res, next) => {
       return res.status(404).send({ error: "Product not found" });
     }
 
-    res.send(product); 
+    res.status(200).send(product); 
   } catch (err) {
     next(err); 
   }
@@ -90,7 +90,7 @@ router.get("/products/:product/reviews", async (req, res, next) => {
 
     const reviews = product.reviews.slice((page - 1) * perPage, page * perPage);
 
-    res.send({
+    res.status(200).send({
       reviews,
       totalReviews: product.reviews.length,
       pages: Math.ceil(product.reviews.length / perPage), 
@@ -150,7 +150,7 @@ router.delete("/products/:product", async (req, res, next) => {
       return res.status(404).send({ error: "Product not found" });
     }
 
-    res.send({ message: "Product deleted successfully", product: deletedProduct });
+    res.status(200).send({ message: "Product deleted successfully", product: deletedProduct });
   } catch (err) {
     next(err);
   }
@@ -172,7 +172,7 @@ router.delete("/reviews/:review", async (req, res, next) => {
 
     await product.save();
 
-    res.send({ message: "Review deleted successfully", product: product });
+    res.status(200).send({ message: "Review deleted successfully", product: product });
   } catch (err) {
     next(err);
   }

@@ -1,16 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 
 const TopBar = ({ onSearch, onSortCategory, onSortPrice }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSearch(searchTerm);
+  };
+
   return (
     <div className="container mb-4">
       <div className="row g-3 align-items-center">
         <div className="col-md-6">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Search"
-            onChange={(e) => onSearch(e.target.value)}
-          />
+          <form onSubmit={handleSubmit} className="d-flex">
+            <input
+              type="text"
+              className="form-control me-2"
+              placeholder="Search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <button type="submit" className="btn btn-primary">
+              Search
+            </button>
+          </form>
         </div>
         <div className="col-md-3">
           <select

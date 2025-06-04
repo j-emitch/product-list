@@ -4,13 +4,15 @@ import axios from "axios";
 // Async thunk to fetch products
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
-  async ({category, sortOrder} = {}) => {
+  async ({category, sortOrder, query} = {}) => {
 
     let url = "http://localhost:8000/products";
     const params = new URLSearchParams();
 
     if (category) params.append("category", category);
     if (sortOrder) params.append("price", sortOrder);
+    if (query) params.append("query", query);
+    
 
     if (params.toString()) {
       url += `?${params.toString()}`;

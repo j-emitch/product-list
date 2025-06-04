@@ -15,11 +15,13 @@ const ProductList = () => {
   const [sortParams, setSortParams] = useState({
     category: "",
     sortOrder: "",
+    query: "",
   });
 
   const handleSearch = (searchTerm) => {
-    // Implement search logic
-    console.log("Searching for:", searchTerm);
+    const newParams = { ...sortParams, query: searchTerm };
+    setSortParams(newParams);
+    dispatch(fetchProducts(newParams));
   };
 
   const handleSortCategory = (category) => {

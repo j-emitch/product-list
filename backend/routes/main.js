@@ -3,29 +3,24 @@ const faker = require("faker");
 const Product = require("../models/product");
 
 router.get("/generate-fake-data", async (req, res, next) => {
-  const savePromises = [];
-
-  for (let i = 0; i < 90; i++) {
-    let product = new Product();
-
-    product.category = faker.commerce.department();
-    product.name = faker.commerce.productName();
-    product.price = faker.commerce.price();
-    product.image = "https://via.placeholder.com/250?text=Product+Image";
-
-    // Generate fake reviews
-    product.reviews = Array.from({ length: 3 }, () => ({
-      username: faker.internet.userName(),
-      rating: faker.datatype.number({ min: 1, max: 5 }),
-      comment: faker.lorem.sentence(),
-    }));
-
-    savePromises.push(product.save());
-  }
-
   try {
-    await Promise.all(savePromises);
-    res.end();
+    const products = Array.from({ length: 90 }, () => {
+      const product = new Product({
+        category: faker.commerce.department(),
+        name: faker.commerce.productName(),
+        price: faker.commerce.price(),
+        image: "https://via.placeholder.com/250?text=Product+Image",
+        reviews: Array.from({ length: 3 }, () => ({
+          username: faker.internet.userName(),
+          rating: faker.datatype.number({ min: 1, max: 5 }),
+          comment: faker.lorem.sentence(),
+        })),
+      });
+      return product;
+    });
+
+    await Product.insertMany(products);
+    res.status(200).send({ message: "Fake data generated successfully" });
   } catch (err) {
     next(err);
   }

@@ -52,8 +52,8 @@ router.get("/products", async (req, res, next) => {
 
     res.status(200).send({
       products,
-      total: count,
-      pages: Math.ceil(count / perPage),
+      totalDocs: count,
+      numPages: Math.ceil(count / perPage),
       currentPage: page,
     });
   } catch (err) {
@@ -93,7 +93,7 @@ router.get("/products/:product/reviews", async (req, res, next) => {
     res.status(200).send({
       reviews,
       totalReviews: product.reviews.length,
-      pages: Math.ceil(product.reviews.length / perPage), 
+      numPages: Math.ceil(product.reviews.length / perPage), 
       currentPage: page, 
     });
   } catch (err) {

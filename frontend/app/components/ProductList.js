@@ -5,18 +5,29 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../../store/productsSlice";
 import ProductCard from "./ProductCard";
 import TopBar from "./TopBar";
+import Pagination from "./Pagination"; 
 
 const ProductList = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products.items);
   const status = useSelector((state) => state.products.status);
   const error = useSelector((state) => state.products.error);
+  const numPages = useSelector((state) => state.products.numPages);
+  const currentPage = useSelector((state) => state.products.currentPage);
+
 
   const [sortParams, setSortParams] = useState({
     category: "",
     sortOrder: "",
     query: "",
+    page: 1,
   });
+
+  const handlePageChange = (page) => {
+    const newParams = { ...sortParams, page };
+    setSortParams(newParams);
+    dispatch(fetchProducts(newParams));
+  };
 
   const handleSearch = (searchTerm) => {
     const newParams = { ...sortParams, query: searchTerm };
@@ -64,6 +75,11 @@ const ProductList = () => {
           </div>
         ))}
       </div>
+      <Pagination
+        currentPage={currentPage}
+        numPages={numPages}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };
